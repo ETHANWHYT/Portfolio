@@ -190,6 +190,46 @@
   ::-webkit-scrollbar{ width:8px; height:8px; }
   ::-webkit-scrollbar-thumb{ background:#2a2f3a; border-radius:4px; }
   ::-webkit-scrollbar-thumb:hover{ background:#3a4050; }
+
+  @media (max-width: 1100px) {
+    .win{ min-width:260px; min-height:220px; }
+    .dashboard-grid{ grid-template-columns:1fr 1fr; }
+    .skill{ min-width:120px; }
+    .app-grid{ grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); }
+  }
+
+  @media (max-width: 800px) {
+    #taskbar{ flex-wrap:wrap; height:auto; padding:10px; gap:10px; }
+    #taskbar-search{ flex:1 1 100%; max-width:none; margin-left:0; }
+    #taskbar-items{ flex:1 1 100%; justify-content:flex-start; flex-wrap:wrap; gap:6px; }
+    .sys-tray{ width:100%; justify-content:space-between; gap:10px; margin-top:8px; }
+    .desktop-icon{ width:calc(50vw - 24px); min-width:auto; }
+    #desktopIcons{ top:auto; bottom:80px; left:10px; right:10px; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); }
+    .field-row{ flex-direction:column; align-items:stretch; }
+    textarea, input[type=text], input[type=color], select, button.btn{ width:100%; }
+    .app-icon{ padding:10px; }
+    .stat-card{ padding:14px; }
+    .stat-value{ font-size:24px; }
+    .stat-label{ font-size:11px; }
+    .titlebar{ flex-wrap:wrap; gap:6px; }
+    .titlebar .spacer{ flex:1 1 100%; }
+    .titlebar span{ min-width:0; }
+  }
+
+  @media (max-width: 520px) {
+    #taskbar{ padding:8px; gap:8px; }
+    .taskbar-btn{ padding:6px 10px; font-size:12px; }
+    .pin-btn{ width:28px; height:28px; font-size:14px; }
+    .desktop-icon{ width:calc(50vw - 20px); padding:8px; }
+    #taskbar-search{ margin-left:0; }
+    #taskbar .clock{ font-size:11px; }
+    .term{ font-size:12px; }
+    .win{ min-width:240px; min-height:200px; }
+    .app-grid{ gap:10px; }
+    .dashboard-grid{ grid-template-columns:1fr; }
+    .wincontent{ padding:10px; }
+    .notification{ right:10px; left:10px; bottom:10px; }
+  }
 </style>
 </head>
 <body>
@@ -312,10 +352,14 @@ function openApp(id){
   const offset = (winCount % 6) * 24;
   const win = document.createElement('div');
   win.className = 'win';
-  win.style.width = def.w+'px';
-  win.style.height = def.h+'px';
-  win.style.left = (60+offset)+'px';
-  win.style.top = (40+offset)+'px';
+  const maxWidth = Math.min(def.w, window.innerWidth - 32);
+  const maxHeight = Math.min(def.h, window.innerHeight - 72);
+  const left = window.innerWidth <= 640 ? 16 : 60 + offset;
+  const top = window.innerWidth <= 640 ? 56 : 40 + offset;
+  win.style.width = maxWidth + 'px';
+  win.style.height = maxHeight + 'px';
+  win.style.left = left + 'px';
+  win.style.top = top + 'px';
   win.style.zIndex = ++zTop;
 
   win.innerHTML = `
